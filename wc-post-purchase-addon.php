@@ -1,12 +1,6 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
  *
  * @link              https://sahariarkabir.com
  * @since             1.0.0
@@ -19,10 +13,14 @@
  * Version:           1.0.0
  * Author:            Sahariar kabir
  * Author URI:        https://sahariarkabir.com/
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wc-post-purchase-addon
  * Domain Path:       /languages
+ * Requires at least: 5.8
+ * Requires PHP: 7.4
+ * WC requires at least: 5.0
+ * WC tested up to: 9.0
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
 // If this file is called directly, abort.
@@ -36,13 +34,29 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'WC_POST_PURCHASE_ADDON_VERSION', '1.0.0' );
+define( 'WC_POST_PURCHASE_ADDON_DIR', plugin_dir_path( __FILE__ ) );
+define( 'WC_POST_PURCHASE_ADDON_URL', plugin_dir_url( __FILE__ ) );
+define('WC_POST_PURCHASE_ADDON_BASENAME', plugin_basename( __FILE__ ) );
+
+// hpos compatibility check
+function wc_post_purchase_addon_hpos_compitability_check() {
+	if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+			'custom_order_tables',
+			__FILE__,
+			true
+		);
+	}
+}
+add_action( 'before_woocommerce_init', 'wc_post_purchase_addon_hpos_compitability_check' );
+
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-wc-post-purchase-addon-activator.php
  */
 function activate_wc_post_purchase_addon() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wc-post-purchase-addon-activator.php';
+	require_once WC_POST_PURCHASE_ADDON_DIR . 'includes/class-wc-post-purchase-addon-activator.php';
 	Wc_Post_Purchase_Addon_Activator::activate();
 }
 
@@ -51,7 +65,7 @@ function activate_wc_post_purchase_addon() {
  * This action is documented in includes/class-wc-post-purchase-addon-deactivator.php
  */
 function deactivate_wc_post_purchase_addon() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wc-post-purchase-addon-deactivator.php';
+	require_once WC_POST_PURCHASE_ADDON_DIR . 'includes/class-wc-post-purchase-addon-deactivator.php';
 	Wc_Post_Purchase_Addon_Deactivator::deactivate();
 }
 
@@ -62,7 +76,7 @@ register_deactivation_hook( __FILE__, 'deactivate_wc_post_purchase_addon' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-wc-post-purchase-addon.php';
+require WC_POST_PURCHASE_ADDON_DIR . 'includes/class-wc-post-purchase-addon.php';
 
 /**
  * Begins execution of the plugin.
