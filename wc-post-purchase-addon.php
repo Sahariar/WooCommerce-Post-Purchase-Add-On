@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * The plugin bootstrap file
+ *
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              https://sahariarkabir.com
+ * @since             1.0.0
+ * @package           Wc_Post_Purchase_Addon
+ *
+ * @wordpress-plugin
+ * Plugin Name:       WooCommerce Post-Purchase Add-On
+ * Plugin URI:        https://sahariarkabir.com
+ * Description:       Adds a one-click post-purchase add-on to WooCommerce orders, allowing customers to add a complementary product after checkout using the original Stripe payment method.
+ * Version:           1.0.0
+ * Author:            Sahariar kabir
+ * Author URI:        https://sahariarkabir.com/
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       wc-post-purchase-addon
+ * Domain Path:       /languages
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+define( 'WC_POST_PURCHASE_ADDON_VERSION', '1.0.0' );
+
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-wc-post-purchase-addon-activator.php
+ */
+function activate_wc_post_purchase_addon() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wc-post-purchase-addon-activator.php';
+	Wc_Post_Purchase_Addon_Activator::activate();
+}
+
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-wc-post-purchase-addon-deactivator.php
+ */
+function deactivate_wc_post_purchase_addon() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wc-post-purchase-addon-deactivator.php';
+	Wc_Post_Purchase_Addon_Deactivator::deactivate();
+}
+
+register_activation_hook( __FILE__, 'activate_wc_post_purchase_addon' );
+register_deactivation_hook( __FILE__, 'deactivate_wc_post_purchase_addon' );
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/class-wc-post-purchase-addon.php';
+
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_wc_post_purchase_addon() {
+
+	$plugin = new Wc_Post_Purchase_Addon();
+	$plugin->run();
+
+}
+run_wc_post_purchase_addon();
