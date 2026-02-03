@@ -18,7 +18,6 @@ class WC_Post_Purchase_Addon
 		}
 		$this->plugin_name = 'wc-post-purchase-addon';
 		$this->load_dependencies();
-		$this->boot();
 	}
 	private function load_dependencies()
 	{
@@ -37,7 +36,7 @@ class WC_Post_Purchase_Addon
 		return $this->version;
 	}
 
-	private function boot()
+	public function boot()
 	{
 		new WC_Post_Purchase_Addon_Hooks();
 	}

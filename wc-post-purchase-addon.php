@@ -90,7 +90,6 @@ require WC_POST_PURCHASE_ADDON_DIR . 'includes/class-wc-post-purchase-addon.php'
 function run_wc_post_purchase_addon() {
 
 	$plugin = new Wc_Post_Purchase_Addon();
-	$plugin->run();
-
+	$plugin->boot();
 }
 run_wc_post_purchase_addon();
